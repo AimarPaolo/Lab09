@@ -9,6 +9,7 @@ class Controller:
         self._model = model
         self.set_coll = set()
 
+
     def handleAnalizza(self, e):
         self._view._txt_result.controls.clear()
         distanza_minima = self._view._txtIn.value
@@ -29,6 +30,6 @@ class Controller:
         self._view._txt_result.controls.append(ft.Text(f"è stato creato il grafo"))
         self._view._txt_result.controls.append(ft.Text(f"Il numero di nodi è: {nNode} mentre il numero degli archi è: {nEdges}"))
         for i in self._set_coll:
-            self._view._txt_result.controls.append(ft.Text(i))
+            self._view._txt_result.controls.append(ft.Text(f"{i[0]}->{i[1]} -- AvgDist: {i[2]}"))
         self._view.update_page()
 

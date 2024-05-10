@@ -20,18 +20,18 @@ class DAO():
         return result
 
     @staticmethod
-    def get_all_voli(distance):
+    def get_media_tratta():
         conn = DBConnect.get_connection()
 
         result = []
 
         cursor = conn.cursor(dictionary=True)
-        query = """select *
-                from flights f 
-                where f.DISTANCE >= %s"""
-        cursor.execute(query, (distance,))
+        query = """select f.ID ,f.ORIGIN_AIRPORT_ID ,f.DESTINATION_AIRPORT_ID, AVG(DISTANCE) as distanza_media, COUNT(*) as CONTATORE
+                    from flights f 
+                    group by f.ORIGIN_AIRPORT_ID, f.DESTINATION_AIRPORT_ID """
+        cursor.execute(query)
         for row in cursor:
-            result.append(Flights(row["ID"], row["AIRLINE_ID"], row["FLIGHT_NUMBER"], row["TAIL_NUMBER"], row["ORIGIN_AIRPORT_ID"], row["DESTINATION_AIRPORT_ID"], row["SCHEDULED_DEPARTURE_DATE"], row["DEPARTURE_DELAY"], row["ELAPSED_TIME"], row["DISTANCE"], row["ARRIVAL_DATE"], row["ARRIVAL_DELAY"]))
+            result.append(Flights(row["ID"], row["ORIGIN_AIRPORT_ID"], row["DESTINATION_AIRPORT_ID"], row["distanza_media"], row["CONTATORE"]))
         cursor.close()
         conn.close()
         return result
